@@ -1,4 +1,5 @@
 import { useAppStore } from '@/app/store/store';
+import { StartChat } from '@/features/Chat';
 import { User } from '@/features/User';
 
 export const Chats = () => {
@@ -7,6 +8,7 @@ export const Chats = () => {
   return (
     <div>
       <User avatar={avatar} phone={phone} />
+      <StartChat />
     </div>
   );
 };
