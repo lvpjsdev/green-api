@@ -1,15 +1,17 @@
-import { StateCreator } from "zustand";
+import { StateCreator } from 'zustand';
 
-export interface UserSlice {
+export interface User {
     avatar: string;
     phone: string;
-    setAvatar: (avatar: string) => void;
-    setPhone: (phone: string) => void;
+    isAuth: boolean;
+}
+
+export interface UserSlice {
+    user: User;
+    setUser: (user: User) => void;
 }
 
 export const createUserSlice: StateCreator<UserSlice> = (set) => ({
-    avatar: '',
-    phone: '',
-    setAvatar: (avatar) => set({ avatar }),
-    setPhone: (phone) => set({ phone }),
+    user: { avatar: '', phone: '', isAuth: false },
+    setUser: (user) => set((state) => ({ ...state, user })),
 })
