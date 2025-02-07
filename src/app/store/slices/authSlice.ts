@@ -8,7 +8,7 @@ export interface AuthSliceState {
 }
 
 export interface AuthSliceActions {
-    auth: (idInstance: string, apiTokenInstance: string) => void;
+    auth: (idInstance: string, apiTokenInstance: string) => Promise<void>;
 }
 
 export type AuthSlice = AuthSliceState & AuthSliceActions;

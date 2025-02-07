@@ -4,3 +4,7 @@ export type WASettingsResponse = {
     stateInstance: string;
     deviceId: string;
 };
+
+export type SendMessageResponse = {
+    idMessage: string;
+};

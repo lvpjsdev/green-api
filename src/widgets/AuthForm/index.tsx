@@ -2,9 +2,11 @@ import { useAppStore } from '@/app/store/store';
 import { Field } from '@/components/ui/field';
 import { Button, Input } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { useNavigate } from 'react-router';
 
 export const AuthForm = () => {
   const auth = useAppStore.use.auth();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -12,7 +14,12 @@ export const AuthForm = () => {
       apiTokenInstance: '',
     },
     onSubmit: async values => {
-      auth(values.idInstance, values.apiTokenInstance);
+      try {
+        await auth(values.idInstance, values.apiTokenInstance);
+        navigate('/chats');
+      } catch (error) {
+        throw Error('Something goes wrong :(((');
+      }
     },
   });
 
