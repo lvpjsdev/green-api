@@ -1,20 +1,19 @@
+import { Layout } from '@/layouts/Layout';
 import { Chats } from '@/pages/Chats';
 import { AuthForm } from '@/widgets/AuthForm';
+import { BrowserRouter, Route, Routes } from 'react-router';
 import './App.css';
-import { useAppStore } from './store/store';
 
 function App() {
-  const { isAuth } = useAppStore.use.user();
   return (
-    <>
-      {isAuth ? (
-        <div>
-          <Chats />
-        </div>
-      ) : (
-        <AuthForm />
-      )}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/chats" element={<Chats />} />
+        </Route>
+        <Route path="/" element={<AuthForm />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
