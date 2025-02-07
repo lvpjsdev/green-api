@@ -1,10 +1,19 @@
-import './App.css';
+import { Chats } from '@/pages/Chats';
 import { AuthForm } from '@/widgets/AuthForm';
+import './App.css';
+import { useAppStore } from './store/store';
 
 function App() {
+  const { isAuth } = useAppStore.use.user();
   return (
     <>
-      <AuthForm />
+      {isAuth ? (
+        <div>
+          <Chats />
+        </div>
+      ) : (
+        <AuthForm />
+      )}
     </>
   );
 }
