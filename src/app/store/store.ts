@@ -1,7 +1,7 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 import { createSelectors } from './createSelectors';
-import { createAuthSlice, AuthSlice } from './slices/authSlice';
-import { createUserSlice, UserSlice } from './slices/userSlice';
+import { type AuthSlice, createAuthSlice } from './slices/authSlice';
+import { type UserSlice, createUserSlice } from './slices/userSlice';
 
 const useAppStoreBase = create<AuthSlice & UserSlice>((...a) => ({
     ...createAuthSlice(...a),
