@@ -1,15 +1,31 @@
-import { StateCreator } from "zustand";
-
-export interface AuthSlice {
+import { Api } from '@/shared/api';
+import { StateCreator } from 'zustand';
+import { UserSlice } from './userSlice';
+export interface AuthSliceState {
+    api: Api;
     idInstance: string;
     apiTokenInstance: string;
-    setIdInstance: (idInstance: string) => void;
-    setApiTokenInstance: (apiTokenInstance: string) => void;
 }
 
-export const createAuthSlice: StateCreator<AuthSlice> = (set) => ({
+export interface AuthSliceActions {
+    auth: (idInstance: string, apiTokenInstance: string) => void;
+}
+
+export type AuthSlice = AuthSliceState & AuthSliceActions;
+
+export const createAuthSlice: StateCreator<
+    AuthSlice & UserSlice,
+    [],
+    [],
+    AuthSlice
+> = (set, get) => ({
+    api: new Api(),
     idInstance: '',
     apiTokenInstance: '',
-    setIdInstance: (idInstance) => set({ idInstance }),
-    setApiTokenInstance: (apiTokenInstance) => set({ apiTokenInstance }),
-})
+    auth: async (idInstance: string, apiTokenInstance: string) => {
+        const api = get().api;
+        const data = await api.auth(idInstance, apiTokenInstance);
+        set({ idInstance, apiTokenInstance });
+        get().setUser({ avatar: data.avatar, phone: data.phone, isAuth: true });
+    },
+});

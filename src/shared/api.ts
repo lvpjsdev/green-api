@@ -1,17 +1,30 @@
-import { useAuthStore } from '@/app/store/store';
 import { WASettingsResponse } from './types';
 
 const apiUrl = 'https://1103.api.green-api.com';
 
-export const getWASettings = async ({
-    idInstance,
-    apiTokenInstance,
-}: {
+export class Api {
     idInstance: string;
     apiTokenInstance: string;
-}): Promise<WASettingsResponse> => {
+    isAuth: boolean;
 
-    const response = await fetch(`${apiUrl}/waInstance${idInstance}/getWaSettings/${apiTokenInstance}`);
-    return await response.json();
-};
+    constructor() {
+        this.idInstance = '';
+        this.apiTokenInstance = '';
+        this.isAuth = false;
+    }
 
+    async auth(idInstance: string, apiTokenInstance: string): Promise<WASettingsResponse> {
+        try {
+            const response = await fetch(`${apiUrl}/waInstance${idInstance}/getWaSettings/${apiTokenInstance}`);
+            const data: WASettingsResponse = await response.json();
+            this.idInstance = idInstance;
+            this.apiTokenInstance = apiTokenInstance;
+            this.isAuth = true;
+
+            return data;
+
+        } catch (error) {
+            throw new Error('Failed to authenticate');
+        }
+    }
+}
