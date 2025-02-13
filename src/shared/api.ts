@@ -1,4 +1,4 @@
-import { SendMessageResponse, WASettingsResponse } from './types';
+import { GetAvatarResponse, NotificationResponse, SendMessageResponse, WASettingsResponse } from './types';
 
 const apiUrl = 'https://1103.api.green-api.com';
 
@@ -37,12 +37,36 @@ export class Api {
         }
     }
 
-    async sendMessage(phone: string, message: string) {
+    async sendMessage(chatId: string, message: string) {
         const response = await fetch(`${apiUrl}/waInstance${this.idInstance}/sendMessage/${this.apiTokenInstance}`, {
             method: 'POST',
-            body: JSON.stringify({ chatId: `${phone}@c.us`, message }),
+            body: JSON.stringify({ chatId, message }),
         });
         const data: SendMessageResponse = await response.json();
+        return data;
+    }
+
+    async getNotification() {
+        const response = await fetch(`${apiUrl}/waInstance${this.idInstance}/receiveNotification/${this.apiTokenInstance}`);
+        const data: NotificationResponse = await response.json();
+        return data;
+    }
+
+    async deleteNotification(receiptId: number) {
+        const response = await fetch(`${apiUrl}/waInstance${this.idInstance}/deleteNotification/${this.apiTokenInstance}`, {
+            method: 'DELETE',
+            body: JSON.stringify({ receiptId }),
+        });
+        const data: { result: boolean } = await response.json();
+        return data;
+    }
+
+    async getAvatar(chatId: string) {
+        const response = await fetch(`${apiUrl}/waInstance${this.idInstance}/downloadFile/${this.apiTokenInstance}`, {
+            method: 'POST',
+            body: JSON.stringify({ chatId }),
+        });
+        const data: GetAvatarResponse = await response.json();
         return data;
     }
 }
